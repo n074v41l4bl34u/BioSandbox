@@ -1,5 +1,5 @@
 ﻿#load @"Scripts\load-project-debug.fsx"
-#load "../packages/FSharp.Charting.0.90.14/FSharp.Charting.fsx"
+#load "../packages/FSharp.Charting\FSharp.Charting.fsx"
 
 open GpuSimpleSort
 open Alea.CUDA
@@ -10,7 +10,7 @@ open System.Diagnostics
 open FSharp.Charting
 open System
 
-Alea.CUDA.Settings.Instance.Resource.AssemblyPath <- Path.Combine(__SOURCE_DIRECTORY__, @"..\packages\Alea.Cuda.2.2.0.3307\private")
+Alea.CUDA.Settings.Instance.Resource.AssemblyPath <- Path.Combine(__SOURCE_DIRECTORY__, @"..\packages\Alea.Cuda\private")
 Alea.CUDA.Settings.Instance.Resource.Path <- Path.Combine(__SOURCE_DIRECTORY__, @"..\release")
 
 // load everything

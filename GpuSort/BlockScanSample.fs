@@ -1,4 +1,4 @@
-﻿module BlockScanSample
+﻿module GpuBitonicSort
 
 open Alea.CUDA
 open Alea.CUDA.Unbound

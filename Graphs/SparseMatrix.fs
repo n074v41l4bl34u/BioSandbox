@@ -5,8 +5,9 @@ open Alea.CUDA.Unbound
 open Microsoft.FSharp.Math
 open System.Collections.Generic
 open System.Linq
+open MathNet.Numerics
 
-
+(*
 /// <summary>
 /// Sparse matrix implementation with CSR and CSC storage
 /// </summary>
@@ -106,3 +107,4 @@ type SparseMatrix<'a> (ops : INumeric<'a>, row : 'a seq, rowIndex : int seq, col
             |> Array.unzip
 
         SparseMatrix(ops, vals, [0; vals.Length], colIdx, row.Length, isCSR)
+*)

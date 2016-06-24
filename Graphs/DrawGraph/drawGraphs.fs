@@ -26,7 +26,8 @@ let createGraph (graph : string) (processName : string) (graphVizPath : string o
         pi.Arguments <- String.Format("-Tpng -O -Goverlap=prism {0}", graphFile)
         pi.WorkingDirectory <- workingDir
         try
-            let proc = new Process();
+          try
+            use proc = new Process();
             proc.StartInfo <- pi
             proc.Start() |> ignore
 
@@ -34,11 +35,15 @@ let createGraph (graph : string) (processName : string) (graphVizPath : string o
             if proc.ExitCode = 0 then
                 let mat = CvInvoke.Imread(graphFile + ".png", LoadImageType.AnyColor)
                 let viewer = new ImageViewer(mat)
+                viewer.Text <- graphFile + ".png"
                 viewer.Show()
-            else failwith "could not create image file"                  
-        finally
-            if File.Exists graphFile then File.Delete graphFile
-            if File.Exists (graphFile + ".png") then File.Delete (graphFile + ".png")
+            else failwith "could not create image file"                
+          finally
+            try
+              if File.Exists graphFile then File.Delete graphFile
+              if File.Exists (graphFile + ".png") then File.Delete (graphFile + ".png")
+            with ex->failwith (sprintf "cleanup failed: %s; %s" ex.Message ex.Source)
+        with ex->failwith (sprintf "proc failed: %s; %s" ex.Message ex.Source)
     | _ -> failwith "Unknown graphing process"
 
 let visualizeDot graph = createGraph graph "dot.exe" None

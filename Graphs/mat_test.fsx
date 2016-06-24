@@ -1,17 +1,20 @@
 ﻿// Learn more about F# at http://fsharp.org. See the 'F# Tutorial' project
 // for more guidance on F# programming.
-#r @"..\packages\Alea.CUDA.2.2.0.3307\lib\net40\Alea.CUDA.dll"
-#r @"..\packages\Alea.CUDA.IL.2.2.0.3307\lib\net40\Alea.CUDA.IL.dll"
-#r @"..\packages\Alea.CUDA.Unbound.2.2.0.3307\lib\net40\Alea.CUDA.Unbound.dll"
-#r @"..\packages\Alea.IL.2.2.0.3307\lib\net40\Alea.IL.dll"
-#r @"C:\Program Files (x86)\FSharpPowerPack-4.0.0.0\bin\FSharp.PowerPack.dll"
+#r @"..\packages\Alea.CUDA\lib\net40\Alea.CUDA.dll"
+#r @"..\packages\Alea.CUDA.IL\lib\net40\Alea.CUDA.IL.dll"
+#r @"..\packages\Alea.CUDA.Unbound\lib\net40\Alea.CUDA.Unbound.dll"
+#r @"..\packages\Alea.IL\lib\net40\Alea.IL.dll"
+//#r @"C:\Program Files (x86)\FSharpPowerPack-4.0.0.0\bin\FSharp.PowerPack.dll"
 
 // Testing
-#r @"..\packages\NUnit.3.2.1\lib\net45\nunit.framework.dll"
-#r @"..\packages\FsCheck.2.4.0\lib\net45\FsCheck.dll"
+#r @"..\packages\NUnit\lib\net45\nunit.framework.dll"
+#r @"..\packages\FsCheck\lib\net45\FsCheck.dll"
 
-#load "SparseMatrix.fs"
-open Graphs
+#r @"..\packages\MathNet.Numerics\lib\net40\MathNet.Numerics.dll"
+#r @"..\packages\MathNet.Numerics.FSharp\lib\net40\MathNet.Numerics.FSharp.dll"
+open MathNet.Numerics.LinearAlgebra
+//#load "SparseMatrix.fs"
+//open Graphs
 
 // Testing
 open FsCheck
@@ -24,7 +27,8 @@ let generateRow  len = Gen.arrayOfLength len zeroOrNot
 let generateZeroRow len = Gen.arrayOfLength len genZero
 let genSingleRow len = Gen.frequency [(7, generateRow len); (1, generateZeroRow len)]
 
-type SM = SparseMatrix<int>
+//type SM = Matrix<int>.create// SparseMatrix<int>
+open Microsoft.FSharp.Collections
 
 type Generators =
     static member SparseMatrix () =
@@ -38,9 +42,13 @@ type Generators =
                 let! matrix = 
                     Gen.map
                         (fun (r : int [] list) -> 
-                            let m = SparseMatrix.CreateMatrix r.[0] csr
+                            let rl = Array.length r.[0]
+                            let cl = List.length r
+                            let m = SparseMatrix.create rl cl 0 //   SparseMatrix.CreateMatrix r.[0] csr
+                            let mutable i=0;
                             for row in r.[1..] do
-                                m.AddValues row
+                                m.SetRow( i, row)
+                                i<-i+1
                             m) rows
                 return matrix
             }

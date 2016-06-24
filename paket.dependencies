@@ -1,0 +1,16 @@
+redirects: on
+framework: >= net452
+source https://www.nuget.org/api/v2/
+source http://nuget.gw.symbolsource.org/Public/NuGet/FeedService.mvc
+
+nuget Alea.CUDA 2.2.0.3307
+nuget Alea.CUDA.IL 2.2.0.3307
+nuget Alea.CUDA.Unbound 2.2.0.3307
+nuget Alea.IL 2.2.0.3307
+nuget EmguCV
+nuget FsCheck 2.5.0
+nuget FSharp.Charting 0.90.14
+nuget FSharp.Core
+nuget MathNet.Numerics
+nuget MathNet.Numerics.FSharp
+nuget NUnit 3.2.1
